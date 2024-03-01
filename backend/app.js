@@ -5,17 +5,27 @@ import cors from 'cors'
 import { authMiddleware } from './middlewares/authorization.js';
 import zod from 'zod'
 import {User} from './models/users.js'
+import accountRouter from './routers/account.js';
+
 const app=express();
 app.use(cors());
 app.use(express.json());
 
+
 app.use("/api/v1", rootRouter);
 app.use('/user',router);
+router.use("/account", accountRouter);
 
-app.listen(3000,function(){
-    console.log('server is up and running ...')
+router.get("/balance", authMiddleware, async (req, res) => {
+    const account = await Account.findOne({
+        userId: req.userId
+    });
 
-})
+    res.json({
+        balance: account.balance
+    })
+});
+
 
 
 //auth middleware
@@ -67,3 +77,12 @@ router.get("/bulk", async (req, res) => {
         }))
     })
 })
+
+
+
+
+app.listen(3000,function(){
+    console.log('server is up and running ...')
+
+})
+

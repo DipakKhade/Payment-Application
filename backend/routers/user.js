@@ -2,7 +2,8 @@ import express from 'express';
 import zod from 'zod'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
-
+import {User} from '../models/users.js'
+import {Account} from '../models/users.js'
 dotenv.config()
 const router =express.Router();
 
@@ -41,6 +42,13 @@ router.post("/signup", async (req, res) => {
         lastName: req.body.lastName,
     })
     const userId = user._id;
+
+    //creating a account
+    await Account.create({
+        userId,
+        balance: 1 + Math.random() * 10000
+    })
+
 
     const token = jwt.sign({
         userId
@@ -93,3 +101,7 @@ router.post("/signin", async (req, res) => {
 })
 
 export default router;
+
+
+
+//search
