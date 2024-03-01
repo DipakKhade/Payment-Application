@@ -1,11 +1,10 @@
 import express from 'express';
 import zod from 'zod'
-import User from '../models/users'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 
 dotenv.config()
-const userRouter =express.Router();
+const router =express.Router();
 
 //zod 
 const signupBody = zod.object({
@@ -45,7 +44,7 @@ router.post("/signup", async (req, res) => {
 
     const token = jwt.sign({
         userId
-    }, JWT_SECRET);
+    }, process.env.JWT_SECRET);
 
     res.json({
         message: "User created successfully",
@@ -79,7 +78,7 @@ router.post("/signin", async (req, res) => {
     if (user) {
         const token = jwt.sign({
             userId: user._id
-        }, JWT_SECRET);
+        }, process.env.JWT_SECRET   );
   
         res.json({
             token: token
