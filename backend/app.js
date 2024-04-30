@@ -6,7 +6,9 @@ import { authMiddleware } from './middlewares/authorization.js';
 import zod from 'zod'
 import {User} from './models/users.js'
 import accountRouter from './routers/account.js';
-
+import { Account } from './models/users.js';
+import swaggerDocument from './OpenAPISpec.js'
+import swaggerUi from 'swagger-ui-express'
 const app=express();
 app.use(cors());
 app.use(express.json());
@@ -14,9 +16,9 @@ app.use(express.json());
 
 app.use("/api/v1", rootRouter);
 app.use('/user',router);
-router.use("/account", accountRouter);
+app.use("/account", accountRouter);
 
-router.get("/balance", authMiddleware, async (req, res) => {
+app.get("/balance", authMiddleware, async (req, res) => {
     const account = await Account.findOne({
         userId: req.userId
     });
@@ -79,7 +81,7 @@ router.get("/bulk", async (req, res) => {
 })
 
 
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.listen(3000,function(){
     console.log('server is up and running ...')

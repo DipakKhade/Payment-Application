@@ -1,2 +1,20 @@
-/backend/node_modules
-/frontend/node_modules
+# Ignore node_modules directory for both frontend and backend
+**/node_modules/
+
+# Ignore build output for React app
+frontend/build/
+frontend/build/**/*
+
+# Ignore environment files (e.g., .env)
+.env
+
+# Ignore logs and runtime data
+*.log
+
+# Ignore IDE-specific files
+.vscode/
+.idea/
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
